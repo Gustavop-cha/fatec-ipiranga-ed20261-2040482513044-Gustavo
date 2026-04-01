@@ -7,15 +7,15 @@ typedef struct {
     double X, Y, Z, T;
 } PilhaHP;
 
-void inicializar(PilhaHP *p) {
+void inicio(PilhaHP *p) {
     p->X = p->Y = p->Z = p->T = 0.0;
 }
 
-void exibirEstado(PilhaHP *p) {
+void exibiroEstado(PilhaHP *p) {
     printf("\n[T]: %8.2f", p->T);
     printf("\n[Z]: %8.2f", p->Z);
     printf("\n[Y]: %8.2f", p->Y);
-    printf("\n[X]: %8.2f (Display)\n", p->X);
+    printf("\n[X]: %8.2f\n", p->X);
     printf("--------------------------\n");
 }
 
@@ -26,9 +26,8 @@ void push(PilhaHP *p, double valor) {
     p->X = valor;
 }
 
-void operar(PilhaHP *p, char op) {
+void operacao(PilhaHP *p, char op) {
     double resultado = 0;
-    
     if (op == '+') resultado = p->Y + p->X;
     else if (op == '-') resultado = p->Y - p->X;
     else if (op == '*') resultado = p->Y * p->X;
@@ -45,12 +44,10 @@ void operar(PilhaHP *p, char op) {
 
 int main() {
     PilhaHP minhaPilha;
-    inicializar(&minhaPilha);
-
+    inicio(&minhaPilha);
     char expressao[100];
-    printf("Digite a expressao RPN (ex: 5 1 2 + 4 * + 3 -): ");
+    printf("Digite sua expressao RPN (ex: 5 1 2 + 4 * + 3 -): ");
     fgets(expressao, 100, stdin);
-
     char *token = strtok(expressao, " \n");
 
     while (token != NULL) {
@@ -58,13 +55,12 @@ int main() {
             push(&minhaPilha, atof(token));
         } 
         else if (strchr("+-*/", token[0])) {
-            operar(&minhaPilha, token[0]);
+            operacao(&minhaPilha, token[0]);
         }
-
-        exibirEstado(&minhaPilha);
+        exibiroEstado(&minhaPilha);
         token = strtok(NULL, " \n");
     }
 
-    printf("\nO resultado da expressao algebrica e: %.2f\n", minhaPilha.X);
+    printf("\nO resultado e: %.2f\n", minhaPilha.X);
     return 0;
 }
